@@ -453,6 +453,11 @@ class ViewsTestCase(LocaleurlTestCase):
     def setUp(self):
         super(LocaleurlTestCase, self).setUp()
         self.settings_manager = test_utils.TestSettingsManager()
+        self.settings_manager.set(ROOT_URLCONF=self.urls)
+        self.settings_manager.set(MIDDLEWARE=(
+                'django.contrib.sessions.middleware.SessionMiddleware',
+            )
+        )
 
     def test_change_locale_check_session_enabled(self):
         self.settings_manager.set(LOCALEURL_USE_SESSION=True)
@@ -469,3 +474,9 @@ class ViewsTestCase(LocaleurlTestCase):
     def test_change_without_next(self):
         response = self.client.post('/change/', data={'locale': 'de'})
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/de/')
+
+    def test_change_with_next(self):
+        response = self.client.post('/change/', data={'locale': 'de', 'next': '/foo'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/de/foo')
