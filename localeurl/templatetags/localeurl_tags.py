@@ -2,7 +2,7 @@ from django import template
 from django.template.base import Node, Token, TemplateSyntaxError
 from django.template import resolve_variable
 from django.template.defaultfilters import stringfilter
-from django.templatetags import future
+from django.template.defaulttags import url
 
 from localeurl import utils
 
@@ -52,7 +52,7 @@ def locale_url(parser, token):
         raise TemplateSyntaxError("'%s' takes at least two arguments:"
                 " the locale and a view" % bits[0])
     urltoken = Token(token.token_type, bits[0] + ' ' + ' '.join(bits[2:]))
-    urlnode = future.url(parser, urltoken)
+    urlnode = url(parser, urltoken)
     return LocaleURLNode(bits[1], urlnode)
 
 
