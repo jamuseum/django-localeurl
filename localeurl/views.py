@@ -13,7 +13,7 @@ def change_locale(request):
     The url and the locale code need to be specified in the
     request parameters.
     """
-    next = request.REQUEST.get('next', None)
+    next = request.POST.get('next', None)
     if not next:
         referrer = request.META.get('HTTP_REFERER', None)
         if referrer:
