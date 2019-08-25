@@ -13,6 +13,7 @@ from django import template
 from django.test import Client
 from django.utils import encoding
 from django.template.base import Lexer, Parser
+from django.template.engine import Engine
 
 
 NO_SETTING = object()
@@ -132,8 +133,7 @@ class TestTemplate(template.Template):
     Based on the work by Alexander Khodyrev:
     http://www.djangosnippets.org/snippets/1641/
     """
-    def __init__(self, template_string, name='<Unknown Template>',
-            libraries=[]):
+    def __init__(self, template_string, name='<Unknown Template>', libraries=[]):
         try:
             template_string = encoding.smart_unicode(template_string)
         except UnicodeDecodeError:
@@ -142,6 +142,7 @@ class TestTemplate(template.Template):
         origin = template.StringOrigin(template_string)
         self.nodelist = self.my_compile_string(template_string, origin,
                 libraries)
+        self.engine = Engine()
         self.name = name
 
     def my_compile_string(self, template_string, origin, libraries=[]):
