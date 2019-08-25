@@ -12,6 +12,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from django import template
 from django.test import Client
 from django.utils import encoding
+from django.template.base import Lexer, Parser
 
 
 NO_SETTING = object()
@@ -145,8 +146,8 @@ class TestTemplate(template.Template):
 
     def my_compile_string(self, template_string, origin, libraries=[]):
         "Compiles template_string into NodeList ready for rendering"
-        lexer = template.Lexer(template_string, origin)
-        parser = template.Parser(lexer.tokenize())
+        lexer = Lexer(template_string)
+        parser = Parser(lexer.tokenize())
         for lib in libraries:
             parser.add_library(lib)
         return parser.parse()
