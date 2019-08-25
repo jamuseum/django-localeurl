@@ -453,6 +453,11 @@ class ViewsTestCase(LocaleurlTestCase):
     def setUp(self):
         super(LocaleurlTestCase, self).setUp()
         self.settings_manager = test_utils.TestSettingsManager()
+        self.settings_manager.set(ROOT_URLCONF=self.urls)
+        self.settings_manager.set(MIDDLEWARE=(
+                'django.contrib.sessions.middleware.SessionMiddleware',
+            )
+        )
 
     def test_change_locale_check_session_enabled(self):
         self.settings_manager.set(LOCALEURL_USE_SESSION=True)
