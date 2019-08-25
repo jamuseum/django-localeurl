@@ -474,9 +474,9 @@ class ViewsTestCase(LocaleurlTestCase):
     def test_change_without_next(self):
         response = self.client.post('/change/', data={'locale': 'de'})
         self.assertEqual(response.status_code, 302)
-        # assert redirect path == '/'
+        self.assertEqual(response.url, '/de/')
 
     def test_change_with_next(self):
         response = self.client.post('/change/', data={'locale': 'de', 'next': '/foo'})
         self.assertEqual(response.status_code, 302)
-        # assert redirect path == '/foo'
+        self.assertEqual(response.url, '/de/foo')
